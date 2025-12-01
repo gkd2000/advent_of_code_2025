@@ -1,0 +1,9 @@
+# Ignore all
+*
+
+# Unignore all dirs
+!*/
+
+# Unignore gitignore and source code
+!.gitignore
+!*.hs
