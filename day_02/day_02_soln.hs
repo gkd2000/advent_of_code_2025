@@ -7,9 +7,15 @@ build-depends:
 -}
 
 import Data.List.Split
+import System.Environment
 
+{-
+  To run a compiled executable, pass the filename with the input as a command line argument.
+  To run the main function in GHCI, run :main <filename>.
+-}
 main :: IO ()
-main = do contents <- readFile "input.txt"
+main = do fileName <- getArgs
+          contents <- readFile (head fileName)
           let ranges = splitOn "," contents
           let pt1 = sum . filter isDoubledNum $ concatMap enumerateNumsInRange ranges
           let pt2 = sum . filter checkSequences $ concatMap enumerateNumsInRange ranges
