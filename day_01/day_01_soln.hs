@@ -35,18 +35,17 @@ countZerosPassed :: [Int] -> Int
 countZerosPassed nums = go nums _startPos 0
   where
     go [] curPos count = count
-    go (x:xs) curPos count =
-      -- Current position is not 0 and we are at or have passed 0 going to the left
-      if (curPos /= 0) && (newPos <= 0)
-        then go xs newPosAdjusted (1 + (count - (newPos `quot` _dialSize)))
-        -- Current position is 0 and we have moved to the left (do not count the 0 we started on as passing 0; it was counted in the previous loop)
-        else if (curPos == 0) && (newPos < 0)
-          then go xs newPosAdjusted (count - (newPos `quot` _dialSize))
-          -- We passed 0 going to the right
-          else if newPos >= _dialSize
-            then go xs newPosAdjusted (count + (newPos `quot` _dialSize))
-            -- No passing 0
-            else go xs newPosAdjusted count
-      where newPos = curPos + x
-            newPosMod = newPos `mod` _dialSize
-            newPosAdjusted = if newPosMod < 0 then (newPosMod + _dialSize) else newPosMod
+    go (x:xs) curPos count
+      -- Current position is not 0 and we are at or have passed 0 going left.
+      -- Count the number of zeros passed, plus the one we are currently at (if we are at 0).
+      | (curPos /= 0) && (newPos <= 0) = go xs newPosAdjusted (1 + (count - (newPos `quot` _dialSize)))
+      -- Current position is 0 and we have passed 0 going left.
+      -- Do not count the 0 we started on as "passing 0"; it has already been counted in previous call.
+      | (curPos == 0) && (newPos < 0) = go xs newPosAdjusted (count - (newPos `quot` _dialSize))
+      -- We passed 0 going right.
+      | newPos >= _dialSize = go xs newPosAdjusted (count + (newPos `quot` _dialSize))
+      -- No 0s were passed.
+      | otherwise = go xs newPosAdjusted count
+        where newPos = curPos + x
+              newPosMod = newPos `mod` _dialSize
+              newPosAdjusted = if newPosMod < 0 then (newPosMod + _dialSize) else newPosMod
