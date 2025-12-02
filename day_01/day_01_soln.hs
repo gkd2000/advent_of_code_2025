@@ -6,7 +6,6 @@ _startPos = 50
 main :: IO ()
 main = do contents <- readFile "input.txt"
           let turns = map lineToNum (lines contents)
-        --   putStrLn (show turns)
           let pt1 = countZeros turns
           let pt2 = countZerosPassed turns
           putStrLn ("Part 1: " ++ show pt1)
@@ -37,7 +36,7 @@ countZerosPassed nums = go nums _startPos 0
     go [] curPos count = count
     go (x:xs) curPos count
       -- Current position is not 0 and we are at or have passed 0 going left.
-      -- Count the number of zeros passed, plus the one we are currently at (if we are at 0).
+      -- Count the number of zeros passed, plus the one we ended on (if that happened).
       | (curPos /= 0) && (newPos <= 0) = go xs newPosAdjusted (1 + (count - (newPos `quot` _dialSize)))
       -- Current position is 0 and we have passed 0 going left.
       -- Do not count the 0 we started on as "passing 0"; it has already been counted in previous call.
