@@ -40,7 +40,6 @@ interpretInput rowNum paperPos neighborMap = go rowNum 0 paperPos neighborMap
   according to the function. In practice, we use this to increment or decrement the number
   of neighbors for a given position.
 -}
--- parameters: row, col, how to update a single entry, input map
 updateNeighbors :: Int -> Int -> (Int -> Int) -> M.Map (Int, Int) Int -> M.Map (Int, Int) Int
 updateNeighbors row col updateFunc thisMap =
   let neighbors = (tail [(row + i, col + j) | i <- [0, -1, 1], j <- [0, -1, 1]]) in
